@@ -180,6 +180,11 @@ namespace gazebo
     ROS_INFO_STREAM("Received request to attach model: '" << req.model_name_1
                     << "' using link: '" << req.link_name_1 << "' with model: '"
                     << req.model_name_2 << "' using link: '" <<  req.link_name_2 << "'");
+
+    boost::recursive_mutex *mutex = physics->GetPhysicsUpdateMutex();
+    boost::lock_guard<boost::recursive_mutex> lock(*mutex);
+    std::lock_guard<std::mutex> lock2(world->WorldPoseMutex());
+    
     if (! this->attach(req.model_name_1, req.link_name_1,
                        req.model_name_2, req.link_name_2)){
       ROS_ERROR_STREAM("Could not make the attach.");
@@ -198,6 +203,11 @@ namespace gazebo
       ROS_INFO_STREAM("Received request to detach model: '" << req.model_name_1
                       << "' using link: '" << req.link_name_1 << "' with model: '"
                       << req.model_name_2 << "' using link: '" <<  req.link_name_2 << "'");
+
+      boost::recursive_mutex *mutex = physics->GetPhysicsUpdateMutex();
+      boost::lock_guard<boost::recursive_mutex> lock(*mutex);
+      std::lock_guard<std::mutex> lock2(world->WorldPoseMutex());
+      
       if (! this->detach(req.model_name_1, req.link_name_1,
                          req.model_name_2, req.link_name_2)){
         ROS_ERROR_STREAM("Could not make the detach.");
