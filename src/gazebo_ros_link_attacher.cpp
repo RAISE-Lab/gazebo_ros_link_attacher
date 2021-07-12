@@ -51,14 +51,15 @@ namespace gazebo
     // more than once (even deleting any reference to the first one)
     // gazebo hangs/crashes
     fixedJoint j;
-    if(this->getJoint(model1, link1, model2, link2, j)){
-        ROS_INFO_STREAM("Joint already existed, reusing it.");
-        j.joint->Attach(j.l1, j.l2);
-        return true;
-    }
-    else{
-        ROS_INFO_STREAM("Creating new joint.");
-    }
+    // TODO: reuse is broken when a model when a model is deleted and spawned again with the same name
+    //if(this->getJoint(model1, link1, model2, link2, j)){
+    //    ROS_INFO_STREAM("Joint already existed, reusing it.");
+    //    j.joint->Attach(j.l1, j.l2);
+    //    return true;
+    //}
+    //else{
+    //    ROS_INFO_STREAM("Creating new joint.");
+    //}
     j.model1 = model1;
     j.link1 = link1;
     j.model2 = model2;
